@@ -608,7 +608,7 @@ function playTranslatedSpeech(audioData) {
   
   // Queue and overlap management
   let lastTranslation = "";
-  let audioQueue = [];
+  //let audioQueue = [];
   
   //////////////////////\ Peer Connection Setup /\\\\\\\\\\\\\\\\\\\\\\\\\\
   
@@ -857,7 +857,7 @@ function playTranslatedSpeech(audioData) {
     };
   }
   
-  async function azureSpeech(text) {
+  {/*async function azureSpeech(text) {
     const speechConfig = SpeechSDK.SpeechConfig.fromSubscription(API_KEY, API_REGION);
     const stream = new SpeechSDK.PushAudioOutputStreamCallback();
     const audioConfig = SpeechSDK.AudioConfig.fromStreamOutput(stream);
@@ -898,7 +898,70 @@ function playTranslatedSpeech(audioData) {
         playNextAudio();
       };
     });
+  }*/}
+
+  let audioQueue = [];  // Queue to manage audio playback
+
+  async function azureSpeech(text) {
+      const speechConfig = SpeechSDK.SpeechConfig.fromSubscription(API_KEY, API_REGION);
+      const stream = new SpeechSDK.PushAudioOutputStreamCallback();
+      const audioConfig = SpeechSDK.AudioConfig.fromStreamOutput(stream);
+      speechConfig.speechSynthesisVoiceName = SPEECH_LANG;
+    
+      const speechSynthesizer = new SpeechSDK.SpeechSynthesizer(speechConfig, audioConfig);
+      
+      speechSynthesizer.speakTextAsync(
+          text,
+          (result) => {
+              if (result) {
+                  try {
+                      // Convert audio data to ArrayBuffer
+                      const audioBuffer = new Uint8Array(result.audioData).buffer;
+                      audioQueue.push(audioBuffer);
+                      
+                      // If there's audio in the queue, play it
+                      if (audioQueue.length >= 1) {
+                          playNextAudio();
+                      }
+                  } catch (error) {
+                      console.error("Error processing audioData:", error);
+                  }
+                  speechSynthesizer.close();
+              }
+          },
+          (error) => {
+              console.error("Error in speech synthesis:", error);
+              speechSynthesizer.close();
+          }
+      );
   }
+  
+  function playNextAudio() {
+      if (audioQueue.length === 0) return;  // Exit if the queue is empty
+  
+      const audioData = audioQueue[0];  // Get the first audio buffer in the queue
+      const audioContext = new AudioContext();
+  
+      // Using the promise-based decodeAudioData method to decode the audio buffer
+      audioContext.decodeAudioData(audioData)
+          .then((buffer) => {
+              const source = audioContext.createBufferSource();
+              source.buffer = buffer;
+              source.connect(audioContext.destination);
+              source.start(0);
+  
+              // When the audio finishes playing, shift the queue and play the next audio
+              source.onended = () => {
+                  audioQueue.shift();  // Remove the played audio from the queue
+                  playNextAudio();  // Play the next audio in the queue if available
+              };
+          })
+          .catch((error) => {
+              console.error('Error decoding audio data in play next audio:', error);
+          });
+  }
+  
+
   
   streamLingoBtn.addEventListener("click", () => {
     isStreamLingoEnabled = !isStreamLingoEnabled;
