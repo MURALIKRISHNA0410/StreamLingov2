@@ -851,7 +851,7 @@ function playTranslatedSpeech(audioData) {
   
     function updateTranscription(translation) {
       // Append the new translation to the transcription div
-      transcriptionDiv.innerHTML += <p>${translation}</p>;
+      transcriptionDiv.innerHTML += `<p>${translation}</p>`;
       // Scroll to the bottom of the transcription div
       transcriptionDiv.scrollTop = transcriptionDiv.scrollHeight;
     };
