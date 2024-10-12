@@ -591,6 +591,7 @@ function playTranslatedSpeech(audioData) {
   const translationStatus = document.querySelector("#transcriptionLabel");
   
   const socket = io("https://suited-working-barnacle.ngrok-free.app/");
+  const currentUrl = new URL(window.location.href);
   let localStream;
   
   let audioContext, audioWorkletNode;
@@ -677,6 +678,66 @@ function playTranslatedSpeech(audioData) {
   
   //////////////////////\ Sockets.io /\\\\\\\\\\\\\\\\\\\\\\\\\\
   
+  {/*socket.on("offer", async ({ from, to, offer }) => {
+    const pc = PeerConnection.getInstance();
+    await pc.setRemoteDescription(offer);
+    const answer = await pc.createAnswer();
+    await pc.setLocalDescription(answer);
+    socket.emit("answer", { from, to, answer: pc.localDescription });
+  });
+  
+  socket.on("answer", async ({ from, to, answer }) => {
+    const pc = PeerConnection.getInstance();
+    await pc.setRemoteDescription(answer);
+  });
+  
+  socket.on("icecandidate", async (candidate) => {
+    const pc = PeerConnection.getInstance();
+    await pc.addIceCandidate(new RTCIceCandidate(candidate));
+  });
+  
+  socket.on("audioData", (data) => {
+    playTranslatedSpeech(data);
+  });*/}
+
+
+  socket.on("connected", (data) => {
+    // console.log(data);
+  });
+  
+  socket.on("room-full", (roomNumber) => {
+    const app = document.querySelector("#app");
+    app.innerHTML = `ROOM ${roomNumber} FULL.`;
+    app.classList.add("room-full");
+  });
+  
+  socket.on("joined", ({ roomNumber, username }) => {
+    console.log(username, roomNumber);
+  });
+  
+  socket.on("allUsers", (data) => {
+    usersConnectedHeading.innerHTML = `Users Connected in Room ${data.roomNumber}`;
+    const createUsersHtml = () => {
+      const li = document.createElement("li");
+      li.textContent = `${data.username}. ${
+        data.username === userInput.value ? "(You)" : ""
+      }`;
+      if (data.username !== userInput.value) {
+        const button = document.createElement("button");
+        button.classList.add("call-btn");
+        button.textContent = "Call";
+        button.addEventListener("click", (e) => {
+          startCall(data.username);
+        });
+        li.append(button);
+      }
+      usersConnected.appendChild(li);
+    };
+    createUsersHtml();
+    userInputDiv.style.display = "none";
+    streamLingoBtn.style.display = "inline-block";
+  });
+  
   socket.on("offer", async ({ from, to, offer }) => {
     const pc = PeerConnection.getInstance();
     await pc.setRemoteDescription(offer);
@@ -696,6 +757,7 @@ function playTranslatedSpeech(audioData) {
   });
   
   socket.on("audioData", (data) => {
+    console.log(data);
     playTranslatedSpeech(data);
   });
   
@@ -801,7 +863,7 @@ function playTranslatedSpeech(audioData) {
       (result) => {
         if (result) {
           audioQueue.push(result.audioData);
-          if (audioQueue.length === 1) {
+          if (audioQueue.length >=1) {
             playNextAudio();
           }
           speechSynthesizer.close();
