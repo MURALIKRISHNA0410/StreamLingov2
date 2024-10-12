@@ -838,16 +838,22 @@ function playTranslatedSpeech(audioData) {
     speechConfig.addTargetLanguage(TARGET_LANG);
     manish = new SpeechSDK.TranslationRecognizer(speechConfig, audioConfig);
   
-    manish.recognizing = (s, e) => {
-      let newTranslation = e.result.translations.get(TARGET_LANG);
-  
-      newTranslation = removeOverlap(newTranslation, lastTranslation);
-  
-      if (newTranslation.trim() !== "") {
-        transcriptionDiv.innerText += newTranslation + "\n";
-        azureSpeech(newTranslation);
-        lastTranslation = e.result.translations.get(TARGET_LANG);
+    manish.recognized = (s, e) => {
+      if (e.result.reason === SpeechSDK.ResultReason.TranslatedSpeech) {
+        const translation = e.result.translations.get(TARGET_LANG);
+        // Only update the transcription if there's a valid translation
+        if (translation) {
+          updateTranscription(translation);
+          azureSpeech(translation);
+        }
       }
+    };
+  
+    function updateTranscription(translation) {
+      // Append the new translation to the transcription div
+      transcriptionDiv.innerHTML += <p>${translation}</p>;
+      // Scroll to the bottom of the transcription div
+      transcriptionDiv.scrollTop = transcriptionDiv.scrollHeight;
     };
   }
   
@@ -898,6 +904,7 @@ function playTranslatedSpeech(audioData) {
     isStreamLingoEnabled = !isStreamLingoEnabled;
     if (isStreamLingoEnabled) {
       translationStatus.innerHTML = `Translation Service ON`;
+      transcriptionDiv.innerHTML = '';
       azureASR();
       manish.startContinuousRecognitionAsync();
       initAudioWorkletNode(localStream);
