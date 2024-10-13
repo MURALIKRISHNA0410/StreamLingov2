@@ -16,6 +16,9 @@ body {
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4), -5px -5px 10px rgba(255, 255, 255, 0.1); /* Enhanced shadow for depth */
     border-radius: 15px;
     border: 2px solid #4A5056; /* Sleek gray border */
+    justify-content: center;
+    align-items: center;
+    margin-top: 5rem;
   }
   
   /* Input Container */
@@ -53,7 +56,7 @@ body {
   /* Buttons */
   button {
     padding: 10px 20px;
-    background: #4CAF50; /* Green background for buttons */
+    /* background: #0F162B;  */
     color: white;
     border: none;
     border-radius: 10px;
@@ -63,10 +66,10 @@ body {
     transition: background-color 0.3s, transform 0.3s;
   }
   
-  button:hover {
-    background-color: #43A047; /* Darker green on hover */
-    transform: translateY(-2px); /* Lift effect */
-  }
+  /* button:hover {
+    background-color: #1c284d; 
+    transform: translateY(-2px); 
+  } */
   
   /* Users Connected */
   .users-connected {
@@ -81,13 +84,14 @@ body {
     display: flex;
     justify-content: space-between;
     margin-bottom: 20px;
+
   }
   
   video {
     width: 48%;
     border: 2px solid #4A5056; /* Gray border */
     border-radius: 10px;
-    background: #121212; /* Keep video background dark */
+    background: #0F162B; /* Keep video background dark */
   }
   
   /* Transcription Container */
@@ -103,4 +107,80 @@ body {
     font-weight: bold;
     color: #2196F3; /* Bright blue for transcription text */
   }
-  
+
+  .btn-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+  }
+ 
+
+
+/* CSS */
+.button-86 {
+  all: unset;
+  width: 100px;
+  height: 30px;
+  font-size: 16px;
+  background: transparent;
+  border: none;
+  position: relative;
+  color: #f0f0f0;
+  cursor: pointer;
+  z-index: 1;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-86::after,
+.button-86::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  z-index: -99999;
+  transition: all .4s;
+}
+
+.button-86::before {
+  transform: translate(0%, 0%);
+  width: 100%;
+  height: 100%;
+  background: #0F162B;
+  border-radius: 10px;
+}
+
+.button-86::after {
+  transform: translate(10px, 10px);
+  width: 35px;
+  height: 35px;
+  background: #ffffff15;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border-radius: 50px;
+}
+
+.button-86:hover::before {
+  transform: translate(5%, 20%);
+  width: 110%;
+  height: 110%;
+}
+
+.button-86:hover::after {
+  border-radius: 10px;
+  transform: translate(0, 0);
+  width: 100%;
+  height: 100%;
+}
+
+.button-86:active::after {
+  transition: 0s;
+  transform: translate(0, 5%);
+}
