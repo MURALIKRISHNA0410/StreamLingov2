@@ -184,3 +184,14 @@ body {
   transition: 0s;
   transform: translate(0, 5%);
 }
+.call-btn{
+  background: #0F162B;
+  border: 2px solid #4A5056;
+  border-radius: 10px;
+  padding: 10px 20px;
+  color: #f0f0f0;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+
+}
