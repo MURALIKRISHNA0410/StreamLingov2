@@ -120,7 +120,7 @@ socket.on("allUsers", (data) => {
     }`;
     if (data.username !== userInput.value) {
       const button = document.createElement("button");
-      button.classList.add("call-btn");
+      button.classList.add("button-86");
       button.textContent = "Call";
       button.addEventListener("click", (e) => {
         startCall(data.username);
