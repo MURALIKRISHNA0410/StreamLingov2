@@ -35,6 +35,29 @@ const PeerConnection = (function () {
   const createPeerConnection = () => {
     const config = {
       iceServers: [
+         {
+        urls: "stun:stun.relay.metered.ca:80",
+      },
+      {
+        urls: "turn:global.relay.metered.ca:80",
+        username: "14b35492d2dddf38ed706658",
+        credential: "3SmXYGytFHtdHtwt",
+      },
+      {
+        urls: "turn:global.relay.metered.ca:80?transport=tcp",
+        username: "14b35492d2dddf38ed706658",
+        credential: "3SmXYGytFHtdHtwt",
+      },
+      {
+        urls: "turn:global.relay.metered.ca:443",
+        username: "14b35492d2dddf38ed706658",
+        credential: "3SmXYGytFHtdHtwt",
+      },
+      {
+        urls: "turns:global.relay.metered.ca:443?transport=tcp",
+        username: "14b35492d2dddf38ed706658",
+        credential: "3SmXYGytFHtdHtwt",
+      },
       {
         urls: "stun:stun.relay.metered.ca:80",
       },
