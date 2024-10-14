@@ -27,7 +27,7 @@ const SOURCE_LANG = "en-US";
 const TARGET_LANG = "es-ES"; //hi--- for hindi
 
 //const SPEECH_LANG = "hi-IN-MadhurNeural";
-/const SPEECH_LANG = "es-ES-ElviraNeural";
+const SPEECH_LANG = "es-ES-ElviraNeural";
 //////////////////////\ Peer Connection Setup /\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 const PeerConnection = (function () {
