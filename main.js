@@ -24,10 +24,10 @@ const API_KEY = "33c8d69d70f0449ea11d21ea6f27be0b";
 const API_REGION = "eastus";
 
 const SOURCE_LANG = "en-US";
-const TARGET_LANG = "hi";
+const TARGET_LANG = "es-ES"; //hi--- for hindi
 
-const SPEECH_LANG = "hi-IN-MadhurNeural";
-
+//const SPEECH_LANG = "hi-IN-MadhurNeural";
+/const SPEECH_LANG = "es-ES-ElviraNeural";
 //////////////////////\ Peer Connection Setup /\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 const PeerConnection = (function () {
